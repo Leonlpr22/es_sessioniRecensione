@@ -46,6 +46,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <br>
     <a href="presentazione.html">Torna alla pagina di presentazione</a>
 
-    <?php include 'footer.php'; ?>
 </body>
 </html>
