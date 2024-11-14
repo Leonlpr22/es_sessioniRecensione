@@ -1,27 +1,51 @@
 <?php
 session_start();
 
-// Inizializzazione delle variabili di sessione
 if (!isset($_SESSION['count'])) {
-    $_SESSION['count'] = 0;
-    $_SESSION['voti'] = [];
-    $_SESSION['ultima_data'] = "";
+    $_SESSION['count'] = 0;              
+    $_SESSION['voti'] = [];             
+    $_SESSION['ultima_data'] = '';        
 }
 
-// Recupero dei dati inviati dal modulo
-$data = $_POST['data'] ?? "";
-$voto = $_POST['voto'] ?? 0;
+// Verifica se i dati sono stati inviati tramite POST
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+ 
+    $data = $_POST['data'];
+    $voto = $_POST['voto'];
 
-// Aggiornamento delle variabili di sessione
-if ($data && $voto >= 1 && $voto <= 5) {
     $_SESSION['count']++;
+
     $_SESSION['voti'][] = $voto;
+
     $_SESSION['ultima_data'] = $data;
 }
-
-// Mostra i dati inviati
-echo "<h1>Dati ricevuti</h1>";
-echo "<p>Data: " . htmlspecialchars($data) . "</p>";
-echo "<p>Voto: " . htmlspecialchars($voto) . "</p>";
-echo "<br><a href='presentazione.html'>Torna al modulo</a>";
 ?>
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script PHP - Dati Inviati</title>
+</head>
+<body>
+    <h1>Dati Inviati</h1>
+    
+    <p>Numero di invii: <?php echo $_SESSION['count']; ?></p>
+    <p>Ultima data inviata: <?php echo $_SESSION['ultima_data']; ?></p>
+
+    <h2>Voti delle recensioni inviate:</h2>
+    <ul>
+        <?php
+        foreach ($_SESSION['voti'] as $voto) {
+            echo "<li>Voto: $voto</li>";
+        }
+        ?>
+    </ul>
+
+    <br>
+    <a href="presentazione.html">Torna alla pagina di presentazione</a>
+
+    <?php include 'footer.php'; ?>
+</body>
+</html>

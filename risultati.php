@@ -1,17 +1,5 @@
 <?php
 session_start();
-
-// Recupero dei dati dalla sessione
-$count = $_SESSION['count'] ?? 0;
-$voti = $_SESSION['voti'] ?? [];
-$ultima_data = $_SESSION['ultima_data'] ?? "";
-
-// Calcolo della media dei voti
-$media = 0;
-if ($count > 0) {
-    $media = array_sum($voti) / $count;
-}
-
 ?>
 
 <!DOCTYPE html>
@@ -19,11 +7,11 @@ if ($count > 0) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Risultati Recensioni</title>
+    <title>Risultati delle Recensioni</title>
 </head>
 <body>
-    <h1>Risultati Recensioni</h1>
-
+    <h1>Risultati delle Recensioni</h1>
+    
     <table border="1">
         <thead>
             <tr>
@@ -33,21 +21,33 @@ if ($count > 0) {
         </thead>
         <tbody>
             <tr>
-                <td><?php echo $count; ?></td>
-                <td><?php echo htmlspecialchars($ultima_data); ?></td>
+                <td><?php echo $_SESSION['count']; ?></td>
+                <td><?php echo $_SESSION['ultima_data']; ?></td>
             </tr>
         </tbody>
     </table>
 
-    <h3>Media recensioni: <?php echo round($media, 2); ?></h3>
-
-    <h3>Voti delle recensioni:</h3>
+    <h2>Lista dei Voti:</h2>
     <ul>
-        <?php foreach ($voti as $voto) : ?>
-            <li><?php echo $voto; ?></li>
-        <?php endforeach; ?>
+        <?php
+        foreach ($_SESSION['voti'] as $voto) {
+            echo "<li>Voto: $voto</li>";
+        }
+        ?>
     </ul>
 
-    <br><a href="presentazione.html">Torna al modulo</a>
+    <h3>Media dei Voti:</h3>
+    <?php
+    if (count($_SESSION['voti']) > 0) {
+        $media = array_sum($_SESSION['voti']) / count($_SESSION['voti']);
+        echo "<p>La media dei voti è: " . number_format($media, 2) . "</p>";
+    } else {
+        echo "<p>Nessun voto inserito.</p>";
+    }
+    ?>
+
+    <br>
+    <a href="presentazione.html">Torna alla pagina di presentazione</a>
+
 </body>
 </html>
